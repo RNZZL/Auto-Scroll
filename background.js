@@ -25,25 +25,35 @@ function handleScrollevent(request, sender, sendResponse) {
                 }
             });
         sendResponse("stored");
-    } else {
+    }
+    if (request.eventtpye === "onload") {
         chrome.storage.local.get(
             ['scrollinfo'],
             function (result) {
-                let longestTime = 0;
-                let number = 0;//get the most probable position in array.
-                for (let i = 0; i <= result.scrollinfo.length - 1; i++) {
-                    if (result.scrollinfo[i].url === request.url) {
-                        if (result.scrollinfo[i].duration > longestTime) {
-                            longestTime = result.scrollinfo[i].duration;
-                            number = i;
+                console.log(result);
+                let scrollArray = result;
+                if (!Array.isArray(scrollArray)) {
+                    console.log("heyyy", "heyy");
+                    update([]);
+                    sendResponse(null);
+                } else {
+                    let longestTime = 0;
+                    let number = 0;//get the most probable position in array.
+                    for (let i = 0; i <= scrollArray.length - 1; i++) {
+                        if (scrollArray[i].url === request.url) {
+                            if (scrollArray[i].duration > longestTime) {
+                                longestTime = scrollArray[i].duration;
+                                number = i;
+                            }
                         }
                     }
+                    sendResponse(scrollArray[number]);
                 }
-                sendResponse(result.scrollinfo[number].position);
             });
         //first load do stuff
     }
 }
+
 
 function update(array) {
     chrome.storage.local.set({

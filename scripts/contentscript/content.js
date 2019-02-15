@@ -9,7 +9,7 @@ window.onload = function () {
     "url": document.location.href,
   }, (response) => {
     console.log(response);
-    window.scrollTo(0, reponse);//auto scroll function
+    //window.scrollTo(0, reponse);//auto scroll function
   });
 };
 
