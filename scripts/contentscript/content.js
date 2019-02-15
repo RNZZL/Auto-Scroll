@@ -26,6 +26,7 @@ function handleScroll() {
             "duration": endTime - startTime,
             "url": document.location.href,
         }, (response) => {
+            console.log(lastPosition);
             console.log(response);
         });
     }
