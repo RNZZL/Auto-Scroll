@@ -11,6 +11,9 @@ chrome.runtime.onInstalled.addListener(function () {
 chrome.runtime.onMessage.addListener(handleScrollevent);
 
 function handleScrollevent(request, sender, sendResponse) {
+    let scrollArray=[];
+    let longestTime = 0;
+    let rightPosition=0;//get the most probable position in array.
     if (request.eventtpye === "scroll") {
         chrome.storage.local.get(
             ['scrollinfo'],
@@ -30,28 +33,27 @@ function handleScrollevent(request, sender, sendResponse) {
         chrome.storage.local.get(
             ['scrollinfo'],
             function (result) {
-                var scrollArray = result.scrollinfo;
+                scrollArray = result.scrollinfo;
                 if (!Array.isArray(scrollArray)) {
                     console.log("heyyy", "heyy");
                     update([]);
                 } else {
                     console.log(scrollArray);
-                    var longestTime = 0;
-                    var number = 0;//get the most probable position in array.
+
                     for (let i = 0; i <= scrollArray.length - 1; i++) {
                         if (scrollArray[i].url === request.url) {
                             if (scrollArray[i].duration > longestTime) {
                                 longestTime = scrollArray[i].duration;
-                                number = i;
+                                rightPosition=scrollArray[i].position;
                             }
                         }
                     }
-                    sendResponse("success");
-                    console.log(scrollArray[number].position);//
+                    console.log(rightPosition);//
                     console.log(longestTime);
                 }
             });
     }
+    sendResponse(rightPosition);
 }
 
 
