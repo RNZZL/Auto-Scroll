@@ -31,7 +31,7 @@ function handleScrollevent(request, sender, sendResponse) {
             ['scrollinfo'],
             function (result) {
                 console.log(result);
-                let scrollArray = result;
+                var scrollArray = result.scrollinfo;
                 if (!Array.isArray(scrollArray)) {
                     console.log("heyyy", "heyy");
                     update([]);
@@ -39,6 +39,7 @@ function handleScrollevent(request, sender, sendResponse) {
                 } else {
                     let longestTime = 0;
                     let number = 0;//get the most probable position in array.
+                    console.log("begin");//
                     for (let i = 0; i <= scrollArray.length - 1; i++) {
                         if (scrollArray[i].url === request.url) {
                             if (scrollArray[i].duration > longestTime) {
@@ -47,10 +48,10 @@ function handleScrollevent(request, sender, sendResponse) {
                             }
                         }
                     }
-                    sendResponse(scrollArray[number]);
+                    console.log(number);//
                 }
             });
-        //first load do stuff
+        sendResponse(scrollArray[number]);//first load do stuff
     }
 }
 
