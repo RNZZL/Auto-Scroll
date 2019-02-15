@@ -25,9 +25,8 @@ function handleScroll() {
             "position": lastPosition,
             "duration": endTime - startTime,
             "url": document.location.href,
-        }, (response) => {
+        }, () => {
             console.log(lastPosition);
-            console.log(response);
         });
     }
     lastPosition = document.documentElement.scrollTop;
@@ -36,10 +35,14 @@ function handleScroll() {
 
 window.onbeforeunload = function () {
   endTime = new Date().getTime();
-  chrome.runtime.sendMessage({
-    "eventtpye": "scroll",
-    "position": lastPosition,
-    "duration": endTime - startTime,
-    "url": document.location.href,
-  });
+    if (endTime - startTime > 10000) {
+        chrome.runtime.sendMessage({
+            "eventtpye": "scroll",
+            "position": lastPosition,
+            "duration": endTime - startTime,
+            "url": document.location.href,
+        }, () => {
+            console.log(lastPosition);
+        });
+    }
 }

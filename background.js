@@ -24,7 +24,7 @@ function handleScrollevent(request, sender, sendResponse) {
                     console.log(result.scrollinfo);
                 }
             });
-        sendResponse("stored");
+        //sendResponse("stored");
     }
     if (request.eventtpye === "onload") {
         chrome.storage.local.get(
@@ -46,6 +46,7 @@ function handleScrollevent(request, sender, sendResponse) {
                             }
                         }
                     }
+                    sendResponse("success");
                     console.log(scrollArray[number].position);//
                     console.log(longestTime);
                 }
