@@ -1,4 +1,8 @@
 console.log("background running");
+var scrollArray=[];
+var longestTime = 0;
+var rightPosition=0;//get the most probable position in array.
+
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.local.clear(function () {
         var error = chrome.runtime.lastError;
@@ -11,9 +15,6 @@ chrome.runtime.onInstalled.addListener(function () {
 chrome.runtime.onMessage.addListener(handleScrollevent);
 
 function handleScrollevent(request, sender, sendResponse) {
-    let scrollArray=[];
-    let longestTime = 0;
-    let rightPosition=0;//get the most probable position in array.
     if (request.eventtpye === "scroll") {
         chrome.storage.local.get(
             ['scrollinfo'],
@@ -27,7 +28,7 @@ function handleScrollevent(request, sender, sendResponse) {
                     console.log(result.scrollinfo);
                 }
             });
-        //sendResponse("stored");
+        sendResponse("stored");
     }
     if (request.eventtpye === "onload") {
         chrome.storage.local.get(
@@ -37,6 +38,7 @@ function handleScrollevent(request, sender, sendResponse) {
                 if (!Array.isArray(scrollArray)) {
                     console.log("heyyy", "heyy");
                     update([]);
+                    sendResponse(null);
                 } else {
                     console.log(scrollArray);
 
@@ -50,10 +52,11 @@ function handleScrollevent(request, sender, sendResponse) {
                     }
                     console.log(rightPosition);//
                     console.log(longestTime);
+                    sendResponse(rightPosition);
                 }
             });
     }
-    sendResponse(rightPosition);
+    return true;
 }
 
 

@@ -3,16 +3,15 @@ var startTime = new Date().getTime();
 var endTime = new Date().getTime();
 var lastPosition = 0;
 
-window.onload = function () {
-   // window.scrollTo(0, 1253);
-  chrome.runtime.sendMessage({
+// window.scrollTo(0, 1253);
+chrome.runtime.sendMessage({
     "eventtpye": "onload",
     "url": document.location.href,
-  }, (response) => {
+}, (response) => {
     console.log(response);
-    //window.scrollTo(0, reponse);//auto scroll function
-  });
-};
+    window.scrollTo(0, response);//auto scroll function
+});
+
 
 
 window.addEventListener("scroll", handleScroll);
@@ -25,8 +24,8 @@ function handleScroll() {
             "position": lastPosition,
             "duration": endTime - startTime,
             "url": document.location.href,
-        }, () => {
-            console.log(lastPosition);
+        }, (response) => {
+            console.log(response);
         });
     }
     lastPosition = document.documentElement.scrollTop;
@@ -41,8 +40,6 @@ window.onbeforeunload = function () {
             "position": lastPosition,
             "duration": endTime - startTime,
             "url": document.location.href,
-        }, () => {
-            console.log(lastPosition);
         });
     }
 }
